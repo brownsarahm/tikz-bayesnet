@@ -2,6 +2,7 @@
 %
 % Copyright 2010-2011 by Laura Dietz
 % Copyright 2012 by Jaakko Luttinen
+% Copyright 2017 by Sarah Brown
 %
 % The MIT License
 %
@@ -25,9 +26,14 @@ minimum size=20pt, font=\fontsize{10}{10}\selectfont, node distance=1]
 sep=0pt, node distance=0.4]
 % Deterministic node
 \tikzstyle{det} = [latent, diamond]
+% Highlighted for emphasis in presentation
+\tikzstyle{hilite} = [latent,fill=blue!25, minimum size=30pt]
+\tikzstyle{focus} = [ fill=magenta!25]
+
 
 % Plate node
 \tikzstyle{plate} = [draw, rectangle, rounded corners, fit=#1]
+\tikzstyle{iplate} = [ rectangle, rounded corners, fit=#1, inner sep=3pt]
 % Invisible wrapper node
 \tikzstyle{wrap} = [inner sep=0pt, fit=#1]
 % Gate
@@ -35,8 +41,8 @@ sep=0pt, node distance=0.4]
 
 % Caption node
 \tikzstyle{caption} = [font=\footnotesize, node distance=0] %
-\tikzstyle{plate caption} = [caption, node distance=0, inner sep=0pt,
-below left=5pt and 0pt of #1.south east] %
+\tikzstyle{plate caption} = [caption, node distance=0, inner sep=0pt, below left=5pt and 0pt of #1.south east] %
+\tikzstyle{iplate caption} = [caption, node distance=0, inner sep=0pt, below left=6pt and 0pt of #1.south east] %
 \tikzstyle{factor caption} = [caption] %
 \tikzstyle{every label} += [caption] %
 
@@ -85,6 +91,15 @@ below left=5pt and 0pt of #1.south east] %
   \node[plate caption=#2-wrap] (#2-caption) {#4}; %
   \node[plate=(#2-wrap)(#2-caption), #1] (#2) {}; %
 }
+
+% an invisible plate, for fixing when plates overlap over a single node 
+% \plate [options] {name} {fitlist} {caption}
+\newcommand{\iplate}[4][]{ %
+  \node[wrap=#3] (#2-wrap) {}; %
+  \node[iplate caption=#2-wrap] (#2-caption) {#4}; %
+  \node[iplate=(#2-wrap)(#2-caption), #1] (#2) {}; %
+}
+
 
 % \gate [options] {name} {fitlist} {inputs}
 \newcommand{\gate}[4][]{ %
